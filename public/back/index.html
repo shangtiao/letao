@@ -1,12 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Page Title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('get' ,'/employee/checkRootLogin');
+    xhr.send(null);
+    xhr.onload = function () {
+      if(xhr.status == 200) {
+        var data = xhr.responseText;
+        data = JSON.parse(data);
+        if(data.error) {
+          window.location.href = 'login.html';
+          alert(data.message + '即将跳转到登陆界面...');
+        } else {
+          console.log(data);
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
-  <h1>index</h1>
+  <header class="header clearfix">
+    <div class="header_left pull-left">
+      <i class="glyphicon glyphicon-align-justify"></i>
+    </div>
+    <div class="header_right pull-right" data-toggle="modal" data-target="#myModal">
+      <i class="glyphicon glyphicon-log-out"></i>
+    </div>
+  </header>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+        </div>
+        <div class="modal-body">
+          <i class="glyphicon glyphicon-info-sign"></i>
+            您确定要退出后台管理系统吗？
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary tuichu">退出</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="aside">
+    <div class="aside_header">
+      <h1>黑马33期牛逼</h1>
+    </div>
+    <div class="aside_content">
+      <div class="aside_content_imgShow">
+        <div class="imgshow">
+          <img src="images/default.png" alt="">
+        </div>
+        <p>超级管理员</p>
+      </div>
+      <div class="aside_content_nav">
+        <ul>
+          <li class="current">
+            <a href="javascript:void(0);">
+              <i class="glyphicon glyphicon-user"> </i> 用户管理</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);">
+              <i class="glyphicon glyphicon-list"> </i> 分类管理</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);">
+              <i class="glyphicon glyphicon-tags"> </i> 商品管理</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <section class="main">
+
+  </section>
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+
+    $(function () {
+      $('.header_left').click(function () {
+        $('.aside').toggleClass('move');
+        $('.header').toggleClass('move');
+      })
+    })
+
+    $(function() {
+      $('.tuichu').click(function() {
+        $.ajax({
+          url: '/employee/employeeLogout',
+          dataType: 'json',
+          success: function(res) {
+            if(res.success) {
+              window.location.href="login.html";
+            }
+          }
+        })
+      })
+    })
+
+  </script>
 </body>
+
 </html>
